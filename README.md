@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
-> 📖 **Read the blog post**: [Building a Semantic Documentation System](https://example.com/blog/semantic-docs) - Learn about the architecture and design decisions behind this project.
+> 📖 **Read the blog post**: [Building a Semantic Documentation System](/semantic-docs-blogpost.md) - Learn about the architecture and design decisions behind this project.
 
 AI-powered semantic analysis system for project documentation using ChromaDB embeddings, document clustering, and drift detection to maintain documentation quality and organization at scale.
 
