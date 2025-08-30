@@ -1,0 +1,176 @@
+# Semantic Documentation Analysis System
+# Advanced semantic search and analysis for documentation workflows
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "semantic-docs"
+version = "1.0.0"
+description = "AI-powered semantic document analysis with ChromaDB and OpenAI embeddings"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Christian Dalager", email = "christiandalager@example.com"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+keywords = ["documentation", "semantic-analysis", "ai", "chromadb", "openai", "embeddings"]
+
+dependencies = [
+    "chromadb>=0.4.0",
+    "openai>=1.0.0",
+    "pydantic>=2.0.0",
+    "pathlib>=1.0.0",
+    "watchdog>=3.0.0",  # For file system monitoring
+    "numpy>=1.24.0",   # For clustering analysis
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.0.0",
+]
+cli = [
+    "click>=8.0.0",
+    "rich>=13.0.0",  # For beautiful CLI output
+]
+clustering = [
+    "scikit-learn>=1.3.0",  # For k-means and hierarchical clustering
+    "matplotlib>=3.7.0",    # For cluster visualizations
+]
+
+[project.urls]
+Homepage = "https://github.com/christiandalager/semantic-docs"
+Documentation = "https://github.com/christiandalager/semantic-docs#readme"
+Repository = "https://github.com/christiandalager/semantic-docs.git"
+Issues = "https://github.com/christiandalager/semantic-docs/issues"
+
+[project.scripts]
+semantic-docs = "semantic_docs.cli.search:main"
+semantic-validate = "semantic_docs.cli.validator:main"
+semantic-index = "semantic_docs.cli.indexer:main"
+semantic-cluster = "semantic_docs.cli.cluster:main"
+
+[tool.hatchling.build.targets.wheel]
+packages = ["semantic_docs"]
+
+# Tool configurations
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-rN",  # Show only failures summary
+    "--strict-markers",
+    "--strict-config",
+    "--cov=semantic_docs",
+    "--cov-branch",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html:htmlcov",
+    "--cov-fail-under=80",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests requiring external services",
+    "unit: marks tests as fast unit tests",
+]
+
+[tool.coverage.run]
+source = ["semantic_docs"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__init__.py",
+]
+branch = true
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+sort = "-cover"
+fail_under = 80.0
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = false
+warn_no_return = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "chromadb.*",
+    "watchdog.*",
+    "openai.*",
+    "sklearn.*",
+]
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "TID", # flake8-tidy-imports
+]
+ignore = [
+    "E501", # line too long, handled by formatter
+    "B008", # do not perform function calls in argument defaults
+    "C901", # too complex
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+known-first-party = ["semantic_docs"]
+force-single-line = false
+combine-as-imports = true
